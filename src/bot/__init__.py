@@ -3,7 +3,7 @@ import os
 from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(dotenv_path="config/.env")
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
