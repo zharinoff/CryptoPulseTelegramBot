@@ -1,8 +1,9 @@
 import asyncio
-from bot import dp, bot
+from bot import dp, bot, commands
 
 
 async def main():
+    commands.register_handlers()
     await dp.start_polling(bot)
 
 
