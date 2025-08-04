@@ -1,11 +1,11 @@
 from aiogram.filters import Command
 from aiogram.types import Message
+from functools import partial
 
 from . import dp, logger
 from .messages import START_MSG, ERROR_MSG
 
 
-@dp.message(Command("start"))
 async def cmd_start(message: Message) -> None:
     try:
         await message.answer(START_MSG)
@@ -15,7 +15,6 @@ async def cmd_start(message: Message) -> None:
         await message.answer(ERROR_MSG)
 
 
-@dp.message(Command("chat_id"))
 async def cmd_chat_id(message: Message) -> None:
     try:
         chat_type = "группы" if message.chat.type != "private" else "чата"
@@ -28,32 +27,26 @@ async def cmd_chat_id(message: Message) -> None:
         await message.answer(ERROR_MSG)
 
 
-@dp.message(Command("btc"))
-async def cmd_btc(message: Message) -> None:
+async def cmd_send_price(message: Message, coin: str):
     try:
         await message.answer(
-            "Цена на биток: <b>***</b> (в разработке)",
+            f"Цена {coin}: <b>XXX</b> (в разработке)",
             parse_mode="HTML"
         )
     except Exception as e:
-        logger.error(f"Ошибка в команде /btc: {e}")
+        logger.error(f"Ошибка в команде /send_price: {e}")
         await message.answer(ERROR_MSG)
 
 
-@dp.message(Command("eth"))
-async def cmd_eth(message: Message) -> None:
-    try:
-        await message.answer(
-            "Цена на эфир: <b>***</b> (в разработке)",
-            parse_mode="HTML"
-        )
-    except Exception as e:
-        logger.error(f"Ошибка в команде /eth: {e}")
-        await message.answer(ERROR_MSG)
-
-
-@dp.message()
 async def unknown_command(message: Message) -> None:
     await message.answer(f"Неизвестная команда. {START_MSG}")
+
+def register_handlers():
+    dp.message.register(cmd_start, Command("start"))
+    dp.message.register(cmd_chat_id, Command("chat_id"))
+    dp.message.register(partial(cmd_send_price, coin="BTC"), Command("btc"))
+    dp.message.register(partial(cmd_send_price, coin="ETH"), Command("eth"))
+    dp.message.register(unknown_command)
+
 
 __all__ = [dp]
