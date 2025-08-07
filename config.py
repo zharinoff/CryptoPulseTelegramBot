@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from dotenv import load_dotenv
 import os
 
-load_dotenv(dotenv_path="config/.env")
+load_dotenv()
 
 
 @dataclass
@@ -19,6 +19,8 @@ class BybitConfig:
     API_SECRET: str = os.getenv("BYBIT_API_SECRET")
     REST_ENDPOINT: str = os.getenv("BYBIT_REST_ENDPOINT")
     WSS_ENDPOINT: str = os.getenv("BYBIT_WSS_ENDPOINT")
+    REST_TEST: str = os.getenv("BYBIT_REST_TEST")
+    WSS_TEST: str = os.getenv("BYBIT_WSS_TEST")
 
 
 @dataclass

@@ -2,8 +2,8 @@ from aiogram.filters import Command
 from aiogram.types import Message
 from functools import partial
 
-from . import dp, logger
-from .messages import START_MSG, ERROR_MSG
+from bot import dp, logger
+from handlers.messages import START_MSG, ERROR_MSG
 
 
 async def cmd_start(message: Message) -> None:

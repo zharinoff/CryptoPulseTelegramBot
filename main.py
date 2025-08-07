@@ -1,9 +1,11 @@
 import asyncio
+from aiohttp import ClientSession
 from bot import dp, bot, commands
 
 
 async def main():
-    commands.register_handlers()
+    session = ClientSession()
+    commands.register_handlers(session)
     await dp.start_polling(bot)
 
 
