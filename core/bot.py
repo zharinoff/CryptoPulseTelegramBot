@@ -26,11 +26,11 @@ class TelegramBot(IBotClient):
 
     async def start(self) -> None:
         self._logger.info("Бот запущен")
-        await self._dp.start_polling()
+        await self._dp.start_polling(self._bot)
 
     async def stop(self) -> None:
         self._logger.info("Бот остановлен")
-        await self._bot.close()
+        await self._bot.session.close()
 
     def register_handlers(self) -> None:
         for handler in self._handlers:
