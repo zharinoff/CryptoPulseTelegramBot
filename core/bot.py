@@ -1,6 +1,7 @@
 from aiogram import Bot, Dispatcher
-from typing import Protocol
+from typing import Protocol, Iterable
 from config import ITelegramConfig
+from handlers.base import IHandler
 from utils.logger import ILogger
 
 
@@ -15,11 +16,13 @@ class TelegramBot(IBotClient):
             self,
             config: ITelegramConfig,
             logger: ILogger,
+            handlers: Iterable[IHandler]
     ):
         self._config = config
         self._logger = logger
         self._bot = Bot(token=self._config.TOKEN)
         self._dp = Dispatcher(bot=self._bot)
+        self._handlers = handlers
 
     async def start(self) -> None:
         self._logger.info("Бот запущен")
@@ -29,20 +32,19 @@ class TelegramBot(IBotClient):
         self._logger.info("Бот остановлен")
         await self._bot.close()
 
-    def register_handlers(self, *modules) -> None:
-        for module in modules:
-            if hasattr(module, "register"):
-                module.register(self._dp)
-                self._logger.debug(
-                    f"Зарегистрирован обработчик из {module.__name__}"
-                )
+    def register_handlers(self) -> None:
+        for handler in self._handlers:
+            handler.register(dp=self._dp)
+            self._logger.debug(
+                f"Зарегистрирован обработчик {handler.__class__.__name__}"
+            )
 
 
 def create_bot(
     config: ITelegramConfig,
     logger: ILogger,
-    handlers: tuple
+    handlers: Iterable[IHandler]
 ) -> IBotClient:
-    bot = TelegramBot(config, logger)
-    bot.register_handlers(*handlers)
+    bot = TelegramBot(config, logger, handlers)
+    bot.register_handlers()
     return bot
