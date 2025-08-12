@@ -28,12 +28,13 @@ class Logger(ILogger):
         console_handler.setFormatter(formatter)
         self._logger.addHandler(console_handler)
 
-        if not config.LOG_FILE:
+        if config.LOG_FILE is not None:
             file_handler = logging.FileHandler(config.LOG_FILE)
             file_handler.setFormatter(formatter)
             self._logger.addHandler(file_handler)
 
-        self._logger.setLevel(config.LOG_LEVEL)
+        log_level = config.LOG_LEVEL #if config.LOG_LEVEL else "INFO"
+        self._logger.setLevel(log_level)
 
     def debug(self, msg: str) -> None:
         self._logger.debug(msg)

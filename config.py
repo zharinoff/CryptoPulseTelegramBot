@@ -63,7 +63,7 @@ class LoggerConfig(ILoggerConfig):
 
 def create_telegram_config() -> ITelegramConfig:
     return TelegramConfig(
-        TOKEN=os.getenv("TELEGRAM_TOKEN"),
+        TOKEN=os.getenv("TELEGRAM_BOT_TOKEN"),
         ID_CHAT=int(env) if (env := os.getenv("TELEGRAM_ID_CHAT")) else None,
         ID_GROUP=int(env) if (env := os.getenv("TELEGRAM_ID_GROUP")) else None,
         ID_CHANNEL=int(env) if (env := os.getenv("TELEGRAM_ID_CHANNEL")) else None
@@ -83,6 +83,6 @@ def create_bybit_config() -> IBybitConfig:
 
 def create_logger_config() -> ILoggerConfig:
     return LoggerConfig(
-        LOG_LEVEL=os.getenv("LOG_LEVEL"),
-        LOG_FILE=os.getenv("LOG_FILE")
+        LOG_LEVEL=os.getenv("LOGGER_LOG_LEVEL"),
+        LOG_FILE=os.getenv("LOGGER_LOG_FILE")
     )
