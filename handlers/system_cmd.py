@@ -1,5 +1,6 @@
 from aiogram import Dispatcher
 from aiogram import types
+from aiogram.filters import Command
 from handlers.base import IHandler
 from utils.logger import ILogger
 
@@ -9,15 +10,13 @@ class SystemCommands(IHandler):
         self._logger = logger
 
     def register(self, dp: Dispatcher):
-        dp.register_message_handler(
+        dp.message.register(
             self._cmd_start,
-            commands=["start"],
-            state="*"
+            Command(commands=["start"])
         )
-        dp.register_message_handler(
+        dp.message.register(
             self._cmd_help,
-            commands=["help"],
-            state="*"
+            Command(commands=["help"])
         )
 
     async def _cmd_start(self, message: types.Message) -> None:
