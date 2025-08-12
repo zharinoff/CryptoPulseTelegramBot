@@ -1,13 +1,5 @@
 import asyncio
-from aiohttp import ClientSession
-from bot import dp, bot, commands
+from app.runner import run
 
-
-async def main():
-    session = ClientSession()
-    commands.register_handlers(session)
-    await dp.start_polling(bot)
-
-
-if __name__ == '__main__':
-    asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(run())
